@@ -1,0 +1,20 @@
+services:
+  task-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - task-management
+
+volumes:
+  redis_data:
+
+networks:
+  task-management:
+    external: true

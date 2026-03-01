@@ -1,0 +1,12 @@
+# Ignore everything by default
+**
+
+# Include needed files for build
+!/src
+!/Dockerfile*
+!/pyproject.toml
+!/uv.lock
+!/alembic*
+!/requirements.txt
+!/docker-compose.yml
+

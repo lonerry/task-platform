@@ -1,0 +1,11 @@
+# Ignore everything
+**
+
+# Allow files and directories
+!/src
+!/Dockerfile*
+!/uv.lock
+!/pyproject.toml
+!/alembic*
+!/entrypoint.sh
+!/requirements.txt

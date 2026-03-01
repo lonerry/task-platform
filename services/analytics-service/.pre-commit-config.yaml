@@ -1,0 +1,51 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.4.0
+  hooks:
+  - id: check-ast
+  - id: trailing-whitespace
+  - id: check-toml
+  - id: end-of-file-fixer
+
+- repo: https://github.com/asottile/add-trailing-comma
+  rev: v2.1.0
+  hooks:
+  - id: add-trailing-comma
+
+- repo: local
+  hooks:
+  - id: autopep8
+    name: autopep8
+    entry: uvx autopep8
+    language: system
+    types: [python]
+    args: [--aggressive, --experimental, -r, -i]
+
+  - id: black
+    name: Format with Black
+    entry: uvx black
+    language: system
+    types: [python]
+    args: [--fast]
+
+  - id: isort
+    name: isort
+    entry: uvx isort
+    language: system
+    types: [python]
+
+  - id: flake8
+    name: Check with Flake8
+    entry: uvx flake8
+    language: system
+    pass_filenames: false
+    types: [python]
+    args: [--config, .flake8, --count, .]
+
+  - id: mypy
+    name: Check types with mypy
+    entry: uvx mypy
+    language: system
+    pass_filenames: false
+    types: [python]
+    args: [--config, mypy.ini, .]

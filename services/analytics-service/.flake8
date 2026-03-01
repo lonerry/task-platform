@@ -1,0 +1,21 @@
+[flake8]
+extend-ignore = E203,W503,D100,D101,D102,D103,D104,D105,D106,D107,C901,P101,P103,F403,F405,DJ01
+max-line-length = 120
+max-complexity = 10
+statistics = True
+count = True
+exclude =
+    alembic/versions/*,
+    env.py,
+    .venv,
+    ./venv,
+    tests/resources/*,
+    tests/helpers.py
+
+# flake8-quotes settings
+inline-quotes = "
+multiline-quotes = """
+docstring-quotes = """
+avoid-escape = True
+# flake8-coding settings
+no-accept-encodings = True

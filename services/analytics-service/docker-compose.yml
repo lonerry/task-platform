@@ -1,0 +1,17 @@
+services:
+  analytics-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - task-management
+
+networks:
+  task-management:
+    external: true
