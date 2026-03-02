@@ -34,10 +34,6 @@ class PostgresDatabase:
                 await session.rollback()
                 raise
 
-    async def init_models(self):
-        async with self._engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-
     async def close(self):
         await self._engine.dispose()
 

@@ -27,10 +27,3 @@ class MessageParsingError(AnalyticsServiceError):
         super().__init__(self.message)
 
 
-class StatsUpdateError(AnalyticsServiceError):
-    message: str
-
-    def __init__(self, status: str, error: str) -> None:
-        self.message = f"Failed to update stats for status '{status}': {error}"
-        super().__init__(self.message)
-

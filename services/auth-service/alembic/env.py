@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 's
 
 from core.config import settings
 from infrastructure.postgres.database import metadata
-from infrastructure.postgres.models import *  # noqa: F401,F403
+from infrastructure.postgres.models import * 
 
 
 CREATE_SCHEMA_QUERY = f"CREATE SCHEMA IF NOT EXISTS {settings.POSTGRES_SCHEMA};"
