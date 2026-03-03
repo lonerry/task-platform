@@ -1,5 +1,6 @@
 class AnalyticsServiceError(Exception):
     """Базовое исключение для Analytics Service"""
+
     pass
 
 
@@ -25,5 +26,3 @@ class MessageParsingError(AnalyticsServiceError):
     def __init__(self, message_content: str, error: str) -> None:
         self.message = f"Failed to parse message: {message_content}. Error: {error}"
         super().__init__(self.message)
-
-

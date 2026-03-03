@@ -1,7 +1,7 @@
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import UserRepository
-from services.security import decode_token
 from schemas.auth import MeResponse
+from services.security import decode_token
 
 
 class AssignRoleUseCase:
@@ -18,6 +18,9 @@ class AssignRoleUseCase:
 
         async with self._db.session() as session:
             updated = await self._users.update_role(session, user_id, role)
-            return MeResponse(id=updated.id, email=updated.email, role=updated.role, is_active=updated.is_active)
-
-
+            return MeResponse(
+                id=updated.id,
+                email=updated.email,
+                role=updated.role,
+                is_active=updated.is_active,
+            )

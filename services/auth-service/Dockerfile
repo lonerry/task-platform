@@ -21,5 +21,3 @@ ENV PYTHONPATH=/app/src
 EXPOSE 8000
 
 CMD ["sh", "entrypoint.sh"]
-
-

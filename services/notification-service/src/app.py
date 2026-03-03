@@ -1,17 +1,17 @@
 from contextlib import asynccontextmanager
 
-from dishka.integrations.fastapi import setup_dishka
-from dishka.integrations.faststream import setup_dishka as setup_dishka_faststream
-from fastapi import FastAPI
-from faststream import FastStream
-from starlette.middleware.cors import CORSMiddleware
-
 from api.health_check import health_check_router
+from api.kafka.consumer import broker, router
 from core.config import settings
 from core.logger import get_logger
+from dishka.integrations.fastapi import setup_dishka
+from dishka.integrations.faststream import \
+    setup_dishka as setup_dishka_faststream
 from domain.providers.setup import container
+from fastapi import FastAPI
+from faststream import FastStream
 from services.metrics import instrumentator
-from api.kafka.consumer import broker, router
+from starlette.middleware.cors import CORSMiddleware
 
 logger = get_logger(__name__)
 

@@ -1,10 +1,10 @@
-from dishka import Provider, Scope, provide, make_async_container
+from core.config import settings
+from dishka import Provider, Scope, make_async_container, provide
+from domain.use_cases.get_task_stats import GetTaskStatsUseCase
+from domain.use_cases.update_stats import UpdateStatsUseCase
 from faststream.kafka import KafkaBroker
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import StatsRepository
-from domain.use_cases.update_stats import UpdateStatsUseCase
-from domain.use_cases.get_task_stats import GetTaskStatsUseCase
-from core.config import settings
 
 
 class AppProvider(Provider):
@@ -23,11 +23,15 @@ class AppProvider(Provider):
         return StatsRepository()
 
     @provide(scope=Scope.REQUEST)
-    async def update_stats_use_case(self, db: PostgresDatabase, repo: StatsRepository) -> UpdateStatsUseCase:
+    async def update_stats_use_case(
+        self, db: PostgresDatabase, repo: StatsRepository
+    ) -> UpdateStatsUseCase:
         return UpdateStatsUseCase(db, repo)
 
     @provide(scope=Scope.REQUEST)
-    async def get_task_stats_use_case(self, db: PostgresDatabase, repo: StatsRepository) -> GetTaskStatsUseCase:
+    async def get_task_stats_use_case(
+        self, db: PostgresDatabase, repo: StatsRepository
+    ) -> GetTaskStatsUseCase:
         return GetTaskStatsUseCase(db, repo)
 
 

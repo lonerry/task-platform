@@ -1,13 +1,12 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import select, insert, update, delete
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from core.logger import get_logger, log
-from schemas.auth import User, CreateUser, RefreshToken, CreateRefreshToken, UserWithPassword
-from infrastructure.postgres.models import UserModel, RefreshTokenModel
-
+from infrastructure.postgres.models import RefreshTokenModel, UserModel
+from schemas.auth import (CreateRefreshToken, CreateUser, RefreshToken, User,
+                          UserWithPassword)
+from sqlalchemy import delete, insert, select, update
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 
@@ -20,7 +19,9 @@ class UserRepository:
         return User.model_validate(result)
 
     @log(logger)
-    async def get_by_email(self, session: AsyncSession, email: str) -> Optional[UserWithPassword]:
+    async def get_by_email(
+        self, session: AsyncSession, email: str
+    ) -> Optional[UserWithPassword]:
         query = select(UserModel).where(UserModel.email == email)
         result = await session.execute(query)
         obj = result.scalar_one_or_none()
@@ -50,8 +51,14 @@ class UserRepository:
 
 class RefreshTokenRepository:
     @log(logger)
-    async def create(self, session: AsyncSession, token: CreateRefreshToken) -> RefreshToken:
-        query = insert(RefreshTokenModel).values(**token.model_dump()).returning(RefreshTokenModel)
+    async def create(
+        self, session: AsyncSession, token: CreateRefreshToken
+    ) -> RefreshToken:
+        query = (
+            insert(RefreshTokenModel)
+            .values(**token.model_dump())
+            .returning(RefreshTokenModel)
+        )
         result = await session.scalar(query)
         return RefreshToken.model_validate(result)
 
@@ -72,5 +79,3 @@ class RefreshTokenRepository:
         query = delete(RefreshTokenModel).where(RefreshTokenModel.expires_at < now)
         result = await session.execute(query)
         return result.rowcount or 0
-
-

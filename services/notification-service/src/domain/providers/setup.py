@@ -1,5 +1,4 @@
 from dishka import Provider, Scope, make_async_container, provide
-
 from infrastructure.telegram.client import build_telegram_client_from_settings
 from services.notification import NotificationService
 

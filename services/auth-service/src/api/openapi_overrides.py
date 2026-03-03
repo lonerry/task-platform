@@ -1,5 +1,5 @@
-from fastapi.openapi.utils import get_openapi
 from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
 
 
 def apply_bearer_security(app: FastAPI) -> None:
@@ -26,5 +26,3 @@ def apply_bearer_security(app: FastAPI) -> None:
         return app.openapi_schema
 
     app.openapi = custom_openapi  # type: ignore
-
-

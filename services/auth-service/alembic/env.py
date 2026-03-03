@@ -2,17 +2,16 @@ import asyncio
 import logging
 import os
 import sys
-
 from logging.config import fileConfig
+
 from alembic import context
+from core.config import settings
+from infrastructure.postgres.database import metadata
+from infrastructure.postgres.models import *
 from sqlalchemy import engine_from_config, pool, text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
-
-from core.config import settings
-from infrastructure.postgres.database import metadata
-from infrastructure.postgres.models import * 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
 
 CREATE_SCHEMA_QUERY = f"CREATE SCHEMA IF NOT EXISTS {settings.POSTGRES_SCHEMA};"

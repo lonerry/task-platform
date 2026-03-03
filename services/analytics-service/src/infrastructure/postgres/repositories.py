@@ -1,9 +1,11 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, insert, update, func
-from core.logger import get_logger, log
-from schemas.tasks import TaskStatus, TaskStats as TaskStatsSchema
-from infrastructure.postgres.models import TaskStats
 from typing import List
+
+from core.logger import get_logger, log
+from infrastructure.postgres.models import TaskStats
+from schemas.tasks import TaskStats as TaskStatsSchema
+from schemas.tasks import TaskStatus
+from sqlalchemy import func, insert, select, update
+from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)
 
@@ -16,7 +18,11 @@ class StatsRepository:
         stats = result.scalar_one_or_none()
 
         if stats:
-            query = update(TaskStats).where(TaskStats.status == status).values(count=TaskStats.count + 1)
+            query = (
+                update(TaskStats)
+                .where(TaskStats.status == status)
+                .values(count=TaskStats.count + 1)
+            )
             operation = "increment"
         else:
             query = insert(TaskStats).values(status=status, count=1)
@@ -32,7 +38,11 @@ class StatsRepository:
         stats = result.scalar_one_or_none()
 
         if stats and stats.count > 0:
-            query = update(TaskStats).where(TaskStats.status == status).values(count=TaskStats.count - 1)
+            query = (
+                update(TaskStats)
+                .where(TaskStats.status == status)
+                .values(count=TaskStats.count - 1)
+            )
             await session.execute(query)
             logger.info(f"Stats decrement for status '{status}'")
 
@@ -44,7 +54,9 @@ class StatsRepository:
         return [TaskStatsSchema.model_validate(stat) for stat in stats]
 
     @log(logger)
-    async def get_stats_by_status(self, session: AsyncSession, status: str) -> TaskStatsSchema | None:
+    async def get_stats_by_status(
+        self, session: AsyncSession, status: str
+    ) -> TaskStatsSchema | None:
         query = select(TaskStats).where(TaskStats.status == status)
         result = await session.execute(query)
         stat = result.scalar_one_or_none()

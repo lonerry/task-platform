@@ -49,4 +49,3 @@ repos:
     pass_filenames: false
     types: [python]
     args: [--config, mypy.ini, .]
-

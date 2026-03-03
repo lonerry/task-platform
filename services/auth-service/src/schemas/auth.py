@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Generic, Optional, TypeVar
 
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class User(BaseModel):
@@ -66,5 +66,3 @@ class MeResponse(BaseModel):
     email: EmailStr
     role: str
     is_active: bool
-
-

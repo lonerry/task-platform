@@ -1,14 +1,16 @@
 from core.logger import get_logger
+from infrastructure.kafka.producer import KafkaProducerService
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import TaskRepository
-from schemas.tasks import Task, CreateTask
-from infrastructure.kafka.producer import KafkaProducerService
+from schemas.tasks import CreateTask, Task
 
 logger = get_logger(__name__)
 
 
 class CreateTaskUseCase:
-    def __init__(self, db: PostgresDatabase, repo: TaskRepository, kafka: KafkaProducerService):
+    def __init__(
+        self, db: PostgresDatabase, repo: TaskRepository, kafka: KafkaProducerService
+    ):
         self.db = db
         self.repo = repo
         self.kafka = kafka

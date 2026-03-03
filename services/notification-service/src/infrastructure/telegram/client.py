@@ -26,7 +26,10 @@ class TelegramClient:
             if not data.get("ok"):
                 logger.error("Telegram sendMessage failed: %s", data)
             else:
-                logger.info("Telegram message sent, message_id=%s", data.get("result", {}).get("message_id"))
+                logger.info(
+                    "Telegram message sent, message_id=%s",
+                    data.get("result", {}).get("message_id"),
+                )
         except Exception as exc:
             logger.error("Failed to parse Telegram response: %s", exc)
 
@@ -35,4 +38,3 @@ def build_telegram_client_from_settings() -> TelegramClient | None:
     if not settings.TELEGRAM_BOT_TOKEN or not settings.TELEGRAM_CHAT_ID:
         return None
     return TelegramClient(settings.TELEGRAM_BOT_TOKEN, settings.TELEGRAM_CHAT_ID)
-

@@ -1,10 +1,12 @@
+from typing import Protocol
+
 from core.logger import get_logger
 from schemas.tasks import Task
-from typing import Protocol
 
 
 class MessageSender(Protocol):
     async def send_message(self, text: str) -> None: ...
+
 
 logger = get_logger(__name__)
 

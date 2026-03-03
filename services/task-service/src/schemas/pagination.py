@@ -27,4 +27,3 @@ class Pagination(BaseModel, Generic[T]):
     def __init__(self, **data) -> None:  # type: ignore
         data.setdefault("count", len(data.get("items", [])))
         super().__init__(**data)
-

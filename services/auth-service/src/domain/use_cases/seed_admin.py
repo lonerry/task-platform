@@ -1,8 +1,8 @@
+from core.config import settings
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import UserRepository
-from services.security import hash_password
-from core.config import settings
 from schemas.auth import CreateUser
+from services.security import hash_password
 
 
 class SeedAdminUseCase:
@@ -23,5 +23,3 @@ class SeedAdminUseCase:
                     role="admin",
                 ),
             )
-
-

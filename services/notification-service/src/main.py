@@ -1,10 +1,9 @@
 import asyncio
 
-from uvicorn import Config, Server
-
 from app import create_app
 from core.config import settings
 from core.logger import get_logger
+from uvicorn import Config, Server
 
 logger = get_logger(__name__)
 app = create_app()

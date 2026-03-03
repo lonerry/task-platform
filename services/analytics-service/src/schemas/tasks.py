@@ -1,11 +1,14 @@
-from enum import StrEnum
 from datetime import datetime
+from enum import StrEnum
+
 from pydantic import BaseModel, ConfigDict
+
 
 class TaskStatus(StrEnum):
     NEW = "new"
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
+
 
 class Task(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -27,5 +30,6 @@ class TaskStats(BaseModel):
 
 class TaskStatsResponse(BaseModel):
     """Ответ API с общей статистикой"""
+
     total_tasks: int
     stats_by_status: list[TaskStats]

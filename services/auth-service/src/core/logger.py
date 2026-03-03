@@ -1,6 +1,7 @@
 import logging
 from functools import wraps
-from typing import Callable, Any
+from typing import Any, Callable
+
 from colorlog import ColoredFormatter
 
 
@@ -12,14 +13,14 @@ def get_logger(name: str) -> logging.Logger:
         datefmt=None,
         reset=True,
         log_colors={
-            'DEBUG': 'cyan',
-            'INFO': 'green',
-            'WARNING': 'yellow',
-            'ERROR': 'red',
-            'CRITICAL': 'red,bg_white',
+            "DEBUG": "cyan",
+            "INFO": "green",
+            "WARNING": "yellow",
+            "ERROR": "red",
+            "CRITICAL": "red,bg_white",
         },
         secondary_log_colors={},
-        style='%'
+        style="%",
     )
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -39,7 +40,7 @@ def log(logger: logging.Logger):
             except Exception as e:
                 logger.exception(f"Error in {func.__name__}: {str(e)}")
                 raise
+
         return wrapper
+
     return decorator
-
-

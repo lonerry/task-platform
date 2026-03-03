@@ -1,20 +1,19 @@
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Any
-
-from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
-from dishka.integrations.fastapi import setup_dishka
+from typing import Any, AsyncGenerator
 
 from api.auth import auth_router
 from api.health_check import health_check_router
+from api.openapi_overrides import apply_bearer_security
 from core.config import settings
 from core.logger import get_logger
-from services.metrics import instrumentator
+from dishka.integrations.fastapi import setup_dishka
 from domain.providers.setup import container
-from api.openapi_overrides import apply_bearer_security
 from domain.use_cases.seed_admin import SeedAdminUseCase
+from fastapi import FastAPI
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import UserRepository
+from services.metrics import instrumentator
+from starlette.middleware.cors import CORSMiddleware
 
 logger = get_logger(__name__)
 
@@ -31,7 +30,9 @@ def create_app() -> FastAPI:
         finally:
             pass
 
-    app = FastAPI(title="Auth Service", root_path=settings.ROOT_PATH, lifespan=lifespan_app)
+    app = FastAPI(
+        title="Auth Service", root_path=settings.ROOT_PATH, lifespan=lifespan_app
+    )
 
     app.add_middleware(
         CORSMiddleware,

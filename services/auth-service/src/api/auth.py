@@ -1,19 +1,18 @@
 from typing import Annotated
 
-from dishka.integrations.fastapi import FromDishka, inject
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from starlette import status
-
 from core.logger import get_logger, log
+from dishka.integrations.fastapi import FromDishka, inject
 from domain.use_cases.assign_role import AssignRoleUseCase
 from domain.use_cases.login import LoginUseCase
 from domain.use_cases.logout import LogoutUseCase
 from domain.use_cases.me import MeUseCase
 from domain.use_cases.refresh import RefreshUseCase
 from domain.use_cases.register import RegisterUseCase
-from schemas.auth import LoginRequest, TokenPair, RefreshRequest, MeResponse, AssignRoleRequest
-
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from schemas.auth import (AssignRoleRequest, LoginRequest, MeResponse,
+                          RefreshRequest, TokenPair)
+from starlette import status
 
 logger = get_logger(__name__)
 auth_router = APIRouter(prefix="/auth")
@@ -23,7 +22,9 @@ bearer_scheme = HTTPBearer(auto_error=False)
 @auth_router.post("/register", response_model=MeResponse, status_code=201)
 @inject
 @log(logger)
-async def register(payload: LoginRequest, use_case: FromDishka[RegisterUseCase]) -> MeResponse:
+async def register(
+    payload: LoginRequest, use_case: FromDishka[RegisterUseCase]
+) -> MeResponse:
     try:
         return await use_case.execute(payload.email, payload.password)
     except ValueError as e:
@@ -43,7 +44,9 @@ async def login(payload: LoginRequest, use_case: FromDishka[LoginUseCase]) -> To
 @auth_router.post("/refresh", response_model=TokenPair)
 @inject
 @log(logger)
-async def refresh(payload: RefreshRequest, use_case: FromDishka[RefreshUseCase]) -> TokenPair:
+async def refresh(
+    payload: RefreshRequest, use_case: FromDishka[RefreshUseCase]
+) -> TokenPair:
     try:
         return await use_case.execute(payload.refresh_token)
     except ValueError as e:
@@ -57,9 +60,13 @@ async def logout(payload: RefreshRequest, use_case: FromDishka[LogoutUseCase]) -
     await use_case.execute(payload.refresh_token)
 
 
-def get_current_token(credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)]) -> str:
+def get_current_token(
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
+) -> str:
     if credentials is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
+        )
     return credentials.credentials
 
 
@@ -90,5 +97,3 @@ async def assign_role(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-
-

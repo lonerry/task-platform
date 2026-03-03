@@ -1,13 +1,20 @@
 from datetime import datetime, timedelta, timezone
-from infrastructure.postgres.database import PostgresDatabase
-from infrastructure.postgres.repositories import UserRepository, RefreshTokenRepository
-from services.security import create_access_token, decode_token
-from schemas.auth import TokenPair
+
 from core.config import settings
+from infrastructure.postgres.database import PostgresDatabase
+from infrastructure.postgres.repositories import (RefreshTokenRepository,
+                                                  UserRepository)
+from schemas.auth import TokenPair
+from services.security import create_access_token, decode_token
 
 
 class RefreshUseCase:
-    def __init__(self, db: PostgresDatabase, user_repo: UserRepository, refresh_repo: RefreshTokenRepository) -> None:
+    def __init__(
+        self,
+        db: PostgresDatabase,
+        user_repo: UserRepository,
+        refresh_repo: RefreshTokenRepository,
+    ) -> None:
         self._db = db
         self._users = user_repo
         self._refresh = refresh_repo
@@ -28,6 +35,8 @@ class RefreshUseCase:
                 raise ValueError("User not found")
 
             access = create_access_token(str(user.id), user.role)
-            return TokenPair(access_token=access, refresh_token=refresh_token, expires_in=settings.ACCESS_TOKEN_TTL)
-
-
+            return TokenPair(
+                access_token=access,
+                refresh_token=refresh_token,
+                expires_in=settings.ACCESS_TOKEN_TTL,
+            )

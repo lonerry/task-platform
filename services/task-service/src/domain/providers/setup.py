@@ -1,14 +1,14 @@
-from dishka import Provider, Scope, provide, make_async_container
-from faststream.kafka import KafkaBroker
 from core.config import settings
-from infrastructure.postgres.database import PostgresDatabase
-from infrastructure.postgres.repositories import TaskRepository
-from infrastructure.kafka.producer import KafkaProducerService
+from dishka import Provider, Scope, make_async_container, provide
 from domain.use_cases.create_task import CreateTaskUseCase
+from domain.use_cases.delete_task import DeleteTaskUseCase
 from domain.use_cases.get_task import GetTaskUseCase
 from domain.use_cases.get_tasks import GetTasksUseCase
 from domain.use_cases.update_task import UpdateTaskUseCase
-from domain.use_cases.delete_task import DeleteTaskUseCase
+from faststream.kafka import KafkaBroker
+from infrastructure.kafka.producer import KafkaProducerService
+from infrastructure.postgres.database import PostgresDatabase
+from infrastructure.postgres.repositories import TaskRepository
 
 
 class AppProvider(Provider):
@@ -31,26 +31,42 @@ class AppProvider(Provider):
         return KafkaProducerService(broker)
 
     @provide(scope=Scope.REQUEST)
-    async def create_task_use_case(self, db: PostgresDatabase, repo: TaskRepository,
-                                   kafka: KafkaProducerService) -> CreateTaskUseCase:
+    async def create_task_use_case(
+        self,
+        db: PostgresDatabase,
+        repo: TaskRepository,
+        kafka: KafkaProducerService,
+    ) -> CreateTaskUseCase:
         return CreateTaskUseCase(db, repo, kafka)
 
     @provide(scope=Scope.REQUEST)
-    async def get_task_use_case(self, db: PostgresDatabase, repo: TaskRepository) -> GetTaskUseCase:
+    async def get_task_use_case(
+        self, db: PostgresDatabase, repo: TaskRepository
+    ) -> GetTaskUseCase:
         return GetTaskUseCase(db, repo)
 
     @provide(scope=Scope.REQUEST)
-    async def get_tasks_use_case(self, db: PostgresDatabase, repo: TaskRepository) -> GetTasksUseCase:
+    async def get_tasks_use_case(
+        self, db: PostgresDatabase, repo: TaskRepository
+    ) -> GetTasksUseCase:
         return GetTasksUseCase(db, repo)
 
     @provide(scope=Scope.REQUEST)
-    async def update_task_use_case(self, db: PostgresDatabase, repo: TaskRepository,
-                                   kafka: KafkaProducerService) -> UpdateTaskUseCase:
+    async def update_task_use_case(
+        self,
+        db: PostgresDatabase,
+        repo: TaskRepository,
+        kafka: KafkaProducerService,
+    ) -> UpdateTaskUseCase:
         return UpdateTaskUseCase(db, repo, kafka)
 
     @provide(scope=Scope.REQUEST)
-    async def delete_task_use_case(self, db: PostgresDatabase, repo: TaskRepository,
-                                   kafka: KafkaProducerService) -> DeleteTaskUseCase:
+    async def delete_task_use_case(
+        self,
+        db: PostgresDatabase,
+        repo: TaskRepository,
+        kafka: KafkaProducerService,
+    ) -> DeleteTaskUseCase:
         return DeleteTaskUseCase(db, repo, kafka)
 
 

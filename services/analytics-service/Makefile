@@ -2,12 +2,6 @@
 
 SHELL=/bin/bash -e
 
-.DEFAULT_GOAL := help
-
-
-help: ## This help
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-
 lint: ## Lint with flake8 and type-check with mypy
 	uvx flake8 ./
 	uvx mypy ./src

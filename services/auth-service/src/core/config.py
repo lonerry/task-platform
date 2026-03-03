@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     POSTGRES_POOL_PRE_PING: bool = True
 
     # JWT settings
-    ACCESS_TOKEN_TTL: int = 900  
+    ACCESS_TOKEN_TTL: int = 900
     REFRESH_TOKEN_TTL: int = 60 * 60 * 24 * 30
     JWT_SECRET: str = "changeme"
     JWT_ALG: str = "HS256"
@@ -40,5 +40,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-

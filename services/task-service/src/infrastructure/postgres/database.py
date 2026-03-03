@@ -1,10 +1,10 @@
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
-from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-
 from core.config import settings
+from sqlalchemy import MetaData
+from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
+                                    create_async_engine)
 
 
 class PostgresDatabase:
@@ -31,4 +31,3 @@ class PostgresDatabase:
 
 database = PostgresDatabase()
 metadata = MetaData(schema=settings.POSTGRES_SCHEMA)
-

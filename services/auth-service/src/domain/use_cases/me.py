@@ -1,7 +1,7 @@
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import UserRepository
-from services.security import decode_token
 from schemas.auth import MeResponse
+from services.security import decode_token
 
 
 class MeUseCase:
@@ -18,6 +18,6 @@ class MeUseCase:
             user = await self._users.get_by_id(session, user_id)
             if user is None:
                 raise ValueError("User not found")
-            return MeResponse(id=user.id, email=user.email, role=user.role, is_active=user.is_active)
-
-
+            return MeResponse(
+                id=user.id, email=user.email, role=user.role, is_active=user.is_active
+            )

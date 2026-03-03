@@ -4,15 +4,15 @@ import os
 import sys
 
 from alembic import context
+from core.config import settings
+from infrastructure.postgres.database import metadata
+from infrastructure.postgres.models import *
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 from tenacity import before_sleep_log, retry, wait_exponential
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
-from core.config import settings
-from infrastructure.postgres.database import metadata
-from infrastructure.postgres.models import *
 
 CREATE_SCHEMA_QUERY = f"CREATE SCHEMA IF NOT EXISTS {settings.POSTGRES_SCHEMA};"
 # this is the Alembic Config object, which provides

@@ -1,11 +1,13 @@
+from core.exceptions.tasks import TaskNotFoundError
+from infrastructure.kafka.producer import KafkaProducerService
 from infrastructure.postgres.database import PostgresDatabase
 from infrastructure.postgres.repositories import TaskRepository
-from infrastructure.kafka.producer import KafkaProducerService
-from core.exceptions.tasks import TaskNotFoundError
 
 
 class DeleteTaskUseCase:
-    def __init__(self, db: PostgresDatabase, repo: TaskRepository, kafka: KafkaProducerService):
+    def __init__(
+        self, db: PostgresDatabase, repo: TaskRepository, kafka: KafkaProducerService
+    ):
         self.db = db
         self.repo = repo
         self.kafka = kafka
